@@ -20,6 +20,7 @@ class ActorFrameView : public QGraphicsView
     Q_OBJECT
 public:
     ActorFrameView(QWidget *parent);
+    inline const QRect& getBoundingBox() const { return boundingBox; }
 
 signals:
     void boudingBoxResized(const QRect& box);
@@ -40,6 +41,8 @@ protected:
 
     QList<int> animationData;
     AnimationData animaitonData;
+
+    void drawBoundingBox(QPainter& painter);
 
     bool isBoudingBoxResizing;
     void paintEvent(QPaintEvent *event) override;

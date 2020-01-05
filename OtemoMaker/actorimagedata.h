@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QImage>
 #include <QPainter>
+#include <QFileInfo>
 
 class ActorImageData
 {
@@ -24,6 +25,8 @@ public:
         return actorSize;
     }
 
+    inline QString getName() const { return fileInfo.baseName(); }
+
 
     int getCellCount() const { return cellCount; }
     const QSize& getCellSize() const {
@@ -43,6 +46,7 @@ protected:
     QSize actorSize;
     QSize cellSize;
     int cellCount;
+    QFileInfo fileInfo;
 
 };
 

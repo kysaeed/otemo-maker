@@ -18,11 +18,12 @@ public:
     void setFrame(AnimationFrame* frame);
 
 signals:
-    void cellSelected(const AnimationFrame& frame);
+    void cellSelected(AnimationFrame* frame);
     void offsetCandidateMoving(const QPoint& offset);
     void offsetMoved(const QPoint& offset);
 
 public slots:
+    void clear();
     void setActorImage(const ActorImageData& image);
     void setOffset(const QPoint& offset);
     void resetOffset();

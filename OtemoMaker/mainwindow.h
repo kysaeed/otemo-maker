@@ -5,6 +5,7 @@
 #include <QList>
 #include <QFile>
 #include <QDataStream>
+#include <QMessageBox>
 
 #include "animationselectlistitem.h"
 #include "animationframe.h"
@@ -23,9 +24,10 @@ public:
     ~MainWindow();
 
 protected slots:
-    void onImageCellSelected(const AnimationFrame& frame);
+    void onImageCellSelected(AnimationFrame* frame);
     void onOffsetMoved(const QPoint& offset);
     void onAnimationTreeSelected(AnimationFrame* frame);
+    void onAnimationDataChanged(AnimationData* animation);
 
     void setFrameOffset(const QPoint& offset);
 

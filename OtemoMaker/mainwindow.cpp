@@ -14,8 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     connect(
-        ui->actorBuildView, SIGNAL(cellSelected(const AnimationFrame&)),
-        this, SLOT(onImageCellSelected(const AnimationFrame&))
+        ui->actorBuildView, SIGNAL(cellSelected(AnimationFrame*)),
+        this, SLOT(onImageCellSelected(AnimationFrame*))
     );
 
     connect(
@@ -55,16 +55,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(
         ui->animationTreeWidget, SIGNAL(animationDataChanged(AnimationData*)),
-        ui->actorAnimationView, SLOT(setAnimaitonData(AnimationData*))
+        this, SLOT(onAnimationDataChanged(AnimationData*))
     );
 
     ActorImageData actorImage;
-    bool isLoaded = actorImage.load("/Users/kysaeed/work/qt/OtemoMaker/otemo.png");
-//    bool isLoaded = actorImage.load("/Users/kysaeed/work/qt/OtemoMaker/sprite_koneko.png");
-    qDebug("MainWindow::MainWindow : img laod result = %d", isLoaded);
+//    bool isLoaded = actorImage.load("/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/otemo.png");
+    bool isLoaded = actorImage.load("/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/sprite_koneko.png");
 
-    ui->actorImgeView->setActorImage(actorImage);
-    ui->animationSelectListWidget->addNewAnimation("Animation def");
+    if (isLoaded) {
+        ui->actorImgeView->setActorImage(actorImage);
+        ui->animationSelectListWidget->addNewAnimation(actorImage.getName());
+    }
 }
 
 MainWindow::~MainWindow()
@@ -72,12 +73,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::onImageCellSelected(const AnimationFrame& frame)
+void MainWindow::onImageCellSelected(AnimationFrame* frame)
 {
     qDebug("MainWindow::onImageCellSelected() : entre");
 
-    ui->animationTreeWidget->insertFrame(0, new AnimationFrame(frame)); //@
-    setFrameOffset(frame.getOffset());
+    ui->animationTreeWidget->insertFrame(0, frame); //@
+    setFrameOffset(frame->getOffset());
 
     AnimationData* data = ui->animationTreeWidget->createAnimationData();
     ui->actorAnimationView->setAnimaitonData(data);
@@ -96,7 +97,6 @@ qDebug("MainWindow::onOffsetMoved() : %d,%d", offset.x(), offset.y());
 
     AnimationFrame* frame = item->getFrame();
     frame->setOffset(offset);
-//    item->setFrame(frame);
 
     ui->animationTreeWidget->setOffset(offset);
 
@@ -112,6 +112,12 @@ void MainWindow::onAnimationTreeSelected(AnimationFrame* frame)
     ui->spinBoxFrameCount->setValue(frame->getFrameCount());
     ui->actorBuildView->setFrame(frame);
     setFrameOffset(frame->getOffset());
+}
+
+void MainWindow::onAnimationDataChanged(AnimationData *animation)
+{
+    ui->actorBuildView->clear();
+    ui->actorAnimationView->setAnimaitonData(animation);
 }
 
 void MainWindow::setFrameOffset(const QPoint &offset)
@@ -143,6 +149,10 @@ void MainWindow::on_pushButton_clicked()
     QDataStream stream(&file);
     stream.setByteOrder(QDataStream::LittleEndian);
 
+    Actor actor;
+    actor.setBoudingBox(ui->actorAnimationView->getBoundingBox());
+    actor.write(stream);
+
     qDebug("animation-ilst : count=%d", animationList.size());
     stream << static_cast<int32_t>(animationList.size());
     foreach (const AnimationData* animation, animationList) {
@@ -150,6 +160,8 @@ void MainWindow::on_pushButton_clicked()
         qDebug(" frame count = %d", animation->getFrameCount());
     }
     file.close();
+
+    QMessageBox::information(this, tr("SAVE"), tr("animation data stored"));
 }
 
 void MainWindow::on_pushButtonResetOffset_clicked()
@@ -183,6 +195,8 @@ void MainWindow::onAnimationSelected(AnimationData* currentAnimation, AnimationD
     ui->actorAnimationView->setAnimaitonData(currentAnimation);
     ui->animationTreeWidget->setAnimationData(currentAnimation);
     ui->actorAnimationView->setAnimationPlayState(true);
+
+    ui->lineEditAnimationName->setText(currentAnimation->getName());
 }
 
 void MainWindow::onAnimationUnselected(AnimationSelectListItem* previousItem)
@@ -213,5 +227,6 @@ void MainWindow::on_spinBoxOffsetY_valueChanged(int y)
 
 void MainWindow::on_pushButtonAddAnimation_clicked()
 {
-    ui->animationSelectListWidget->addNewAnimation("Animation!");
+    QString name = ui->lineEditAnimationName->text();
+    ui->animationSelectListWidget->addNewAnimation(name);
 }

@@ -22,6 +22,12 @@ void ActorBuildView::setFrame(AnimationFrame* frame)
     viewport()->repaint();
 }
 
+void ActorBuildView::clear()
+{
+    this->frame = nullptr;
+    viewport()->repaint();
+}
+
 void ActorBuildView::setOffset(const QPoint &offset)
 {
     if (frame != nullptr) {
@@ -68,7 +74,7 @@ void ActorBuildView::dropEvent(QDropEvent *event)
 
     viewport()->repaint();
 
-    emit cellSelected(*frame);
+    emit cellSelected(frame);
 }
 
 

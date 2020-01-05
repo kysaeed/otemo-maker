@@ -1,4 +1,5 @@
 #include "actorimagedata.h"
+#include <Qdebug>
 
 ActorImageData::ActorImageData()
 {
@@ -13,6 +14,8 @@ bool ActorImageData::load(const QString &filename)
         return false;
     }
 
+
+    fileInfo = QFileInfo(filename);
     image = image.convertToFormat(QImage::Format_ARGB32);
 
     actorSize  = QSize(128, 128);

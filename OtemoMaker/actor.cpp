@@ -16,8 +16,13 @@ void Actor::setBoudingBox(const QRect &rect)
 
 void Actor::write(QDataStream &stream) const
 {
-    stream << animations.size();
-    foreach (const AnimationData* animation, animations) {
-        animation->write(stream);
-    }
+    stream << static_cast<int32_t>(boudingBox.x());
+    stream << static_cast<int32_t>(boudingBox.y());
+    stream << static_cast<int32_t>(boudingBox.width());
+    stream << static_cast<int32_t>(boudingBox.height());
+
+//    stream << animations.size();
+//    foreach (const AnimationData* animation, animations) {
+//        animation->write(stream);
+//    }
 }
