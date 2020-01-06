@@ -39,7 +39,7 @@ public:
 
     bool drawCell(QPainter& painter, int cell, const QRect& rectDst) const;
 
-    bool drawAll(QPainter& painter, QRect& rectDst);
+    bool drawAll(QPainter& painter, QRect& rectDst) const;
 
 protected:
     QImage image;

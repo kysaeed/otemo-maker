@@ -11,10 +11,6 @@ AnimationSelectList::AnimationSelectList(QWidget *parent) : QListWidget(parent)
 void AnimationSelectList::onCurrentItemChanged(QListWidgetItem *current, QListWidgetItem * previous)
 {
     AnimationSelectListItem* previousItem = dynamic_cast<AnimationSelectListItem*>(previous);
-    if (previousItem != nullptr) {
-//        emit animationUnselected(previousItem);
-    }
-
     AnimationSelectListItem* item = dynamic_cast<AnimationSelectListItem*>(current);
     if (item == nullptr) {
         return;
@@ -50,11 +46,6 @@ AnimationData *AnimationSelectList::getCurrentAnimation()
 void AnimationSelectList::addNewAnimation(const QString &name)
 {
     AnimationSelectListItem* previousItem = dynamic_cast<AnimationSelectListItem*>(currentItem());
-    if (previousItem != nullptr) {
-//        emit animationUnselected(previousItem);
-    }
-
-//    name.sprintf("ani-%d", count());
 
     QString itemTitle = name;
     if (itemTitle.isEmpty()) {

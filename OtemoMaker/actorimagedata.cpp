@@ -33,7 +33,7 @@ bool ActorImageData::drawCell(QPainter& painter, int cell, const QRect& rectDst)
     return true;
 }
 
-bool ActorImageData::drawAll(QPainter &painter, QRect &rectDst)
+bool ActorImageData::drawAll(QPainter &painter, QRect &rectDst) const
 {
     QRect r(0, 0, image.width(), image.height());
     painter.drawImage(rectDst, image, r);

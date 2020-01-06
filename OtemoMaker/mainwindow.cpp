@@ -49,18 +49,13 @@ MainWindow::MainWindow(QWidget *parent)
     );
 
     connect(
-        ui->animationSelectListWidget, SIGNAL(animationUnselected(AnimationSelectListItem*)),
-        this, SLOT(onAnimationUnselected(AnimationSelectListItem*))
-    );
-
-    connect(
         ui->animationTreeWidget, SIGNAL(animationDataChanged(AnimationData*)),
         this, SLOT(onAnimationDataChanged(AnimationData*))
     );
 
     ActorImageData actorImage;
-//    bool isLoaded = actorImage.load("/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/otemo.png");
-    bool isLoaded = actorImage.load("/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/sprite_koneko.png");
+    bool isLoaded = actorImage.load("/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/otemo.png");
+//    bool isLoaded = actorImage.load("/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/sprite_koneko.png");
 
     if (isLoaded) {
         ui->actorImgeView->setActorImage(actorImage);
@@ -197,13 +192,6 @@ void MainWindow::onAnimationSelected(AnimationData* currentAnimation, AnimationD
     ui->actorAnimationView->setAnimationPlayState(true);
 
     ui->lineEditAnimationName->setText(currentAnimation->getName());
-}
-
-void MainWindow::onAnimationUnselected(AnimationSelectListItem* previousItem)
-{
-    qDebug("MainWindow::onAnimationUnselected: enter (data-count = %d)", previousItem->getAnimation()->getFrameCount());
-
-//    previousItem->setAnimation(ui->animationTreeWidget->createAnimationData());
 }
 
 void MainWindow::commitFrames()

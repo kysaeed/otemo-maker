@@ -32,7 +32,7 @@ protected slots:
     void setFrameOffset(const QPoint& offset);
 
     void onAnimationSelected(AnimationData *currentAnimation, AnimationData* previousAnimation);
-    void onAnimationUnselected(AnimationSelectListItem* previousItem);
+//    void onAnimationUnselected(AnimationSelectListItem* previousItem);
 
     void commitFrames();
 

@@ -23,7 +23,6 @@ public slots:
 
 signals:
     void animationSelected(AnimationData* currentAnimation, AnimationData* previousAnimation);
-    void animationUnselected(AnimationSelectListItem* previousItem);
 
 protected slots:
     void onCurrentItemChanged(QListWidgetItem* current, QListWidgetItem* previous);
