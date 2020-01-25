@@ -1,5 +1,5 @@
 #include "actorimagedata.h"
-#include <Qdebug>
+#include <QDebug>
 
 ActorImageData::ActorImageData()
 {
@@ -22,6 +22,8 @@ bool ActorImageData::load(const QString &filename)
     cellSize = QSize(image.width() / actorSize.width(), image.height() / actorSize.height());
     cellCount = cellSize.width() * cellSize.height();
 
+    cellData.fill(nullptr, getCellCount());
+
     return true;
 }
 
@@ -38,6 +40,24 @@ bool ActorImageData::drawAll(QPainter &painter, QRect &rectDst) const
     QRect r(0, 0, image.width(), image.height());
     painter.drawImage(rectDst, image, r);
     return true;
+}
+
+ActorImageCellData* ActorImageData::getCellData(int cell)
+{
+    if (cellData[cell] == nullptr) {
+        cellData[cell] = new ActorImageCellData();
+    }
+
+    return cellData[cell];
+}
+
+void ActorImageData::setCellData(int cell, ActorImageCellData* data)
+{
+    if (cellData[cell] == data) {
+        return;
+    }
+
+    cellData[cell] = data;
 }
 
 int ActorImageData::getCellNumber(int x, int y) const

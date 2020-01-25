@@ -1,7 +1,9 @@
 #include "actor.h"
 
-Actor::Actor()
+Actor::Actor(const ActorImageData& image)
 {
+    this->image = image;
+//    mountPointList.fill(nullptr, image.getCellCount());
 }
 
 void Actor::clearBoundingBox()
@@ -24,5 +26,20 @@ void Actor::write(QDataStream &stream) const
 //    stream << animations.size();
 //    foreach (const AnimationData* animation, animations) {
 //        animation->write(stream);
-//    }
+    //    }
+}
+
+void Actor::read(QDataStream &stream)
+{
+    int32_t x  = 0;
+    stream >> x;
+    int32_t y  = 0;
+    stream >> y;
+    int32_t w  = 0;
+    stream >> w;
+    int32_t h  = 0;
+    stream >> h;
+    boudingBox.setRect(x ,y, w, h);
+
+
 }

@@ -51,6 +51,16 @@ void ActorBuildView::setDefaultFrameCount(int frameCount)
     defaultFrameCount = frameCount;
 }
 
+void ActorBuildView::addEvent(int triggerFrame, const QPoint &offset)
+{
+    AnimationFrameEvent* e = new AnimationFrameEvent();
+    e->setId(1);
+    e->setTriggerFrame(triggerFrame);
+    e->setOffset(offset);
+
+    frame->addFrameEvent(e);
+}
+
 void ActorBuildView::setActorImage(const ActorImageData &image)
 {
     actorImage = image;

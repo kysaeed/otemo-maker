@@ -32,14 +32,17 @@ public:
     const QPoint& getOffset() const { return offset; }
     void setOffset(const QPoint& offset);
 
-    QByteArray toBytes() const;
     void write(QDataStream& stream) const;
+
+    void addFrameEvent(AnimationFrameEvent* event);
+
+
 
 protected:
     int cell;
     QPoint offset;
     int frameCount;
-    QList<AnimationFrameEvent> events;
+    QList<AnimationFrameEvent*> events;
 };
 
 #endif // ANIMATIONFRAME_H

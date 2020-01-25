@@ -49,8 +49,10 @@ private slots:
 
     void on_pushButtonAddAnimation_clicked();
 
+    void on_pushButtonAddEvent_clicked();
+
 protected:
-//    Actor actor;
+    Actor actor;
 
 private:
     Ui::MainWindow *ui;

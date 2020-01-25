@@ -21,6 +21,20 @@ void AnimationFrameTree::insertFrame(int index, AnimationFrame* frame)
     syncListItemToAnimationData();
 }
 
+void AnimationFrameTree::addEvent(AnimationFrameEvent* event)
+{
+    if (getCurrentItem() == nullptr) {
+        return;
+    }
+
+    AnimationFrameTreeEventItem* item = new AnimationFrameTreeEventItem(getCurrentItem(), event);
+    getCurrentItem()->addChild(item);
+
+
+
+
+}
+
 AnimationData* AnimationFrameTree::createAnimationData()
 {
 
@@ -56,11 +70,22 @@ void AnimationFrameTree::setAnimationData(AnimationData* animation)
 
 AnimationFrameTreeItem *AnimationFrameTree::getCurrentItem()
 {
-    AnimationFrameTreeItem* item = dynamic_cast<AnimationFrameTreeItem*>(currentItem());
+    QTreeWidgetItem* item = currentItem();
     if (item == nullptr) {
         return nullptr;
     }
-    return item;
+
+    AnimationFrameTreeItem* rootItem = dynamic_cast<AnimationFrameTreeItem*>(item);
+    if (rootItem != nullptr) {
+        return rootItem;
+    }
+
+    AnimationFrameTreeEventItem* eventItem = dynamic_cast<AnimationFrameTreeEventItem*>(item);
+    if (eventItem != nullptr) {
+        return dynamic_cast<AnimationFrameTreeItem*>(eventItem->parent());
+    }
+
+    return nullptr;
 }
 
 void AnimationFrameTree::syncListItemToAnimationData()

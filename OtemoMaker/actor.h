@@ -4,8 +4,11 @@
 #include <QList>
 #include <QRect>
 #include <QDataStream>
+#include <QVector>
+
 #include "actorimagedata.h"
 #include "animationdata.h"
+#include "animationmountpoint.h"
 
 using AnimationList = QList<AnimationData*>;
 
@@ -13,26 +16,26 @@ using AnimationList = QList<AnimationData*>;
 class Actor
 {
 public:
-    Actor();
+    Actor(const ActorImageData& image = ActorImageData());
 
-    inline const ActorImageData& getImage() {
-        return image;
+    inline const ActorImageData* getImage() {
+        return &image;
     }
 
-    inline const QRect& getBoudingBox() const {
-        return boudingBox;
+    inline QRect* getBoudingBox() {
+        return &boudingBox;
     }
 
     void clearBoundingBox();
     void setBoudingBox(const QRect& rect);
 
 
-    AnimationList& getAnimaitons() {
-        return  animations;
+    AnimationList* getAnimaitons() {
+        return  &animations;
     }
 
-
     void write(QDataStream &stream) const;
+    void read(QDataStream &stream);
 
 protected:
     AnimationList animations;

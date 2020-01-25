@@ -43,23 +43,19 @@ void AnimationFrame::setOffset(const QPoint &offset)
     this->offset = offset;
 }
 
-QByteArray AnimationFrame::toBytes() const
-{
-    QByteArray bytes;
-    QDataStream stream(bytes);
-    write(stream);
-
-    return bytes;
-}
-
 void AnimationFrame::write(QDataStream &stream) const
 {
     stream << (static_cast<int32_t>(cell)) << (static_cast<int32_t>(frameCount));
     stream << (static_cast<int32_t>(offset.x())) << (static_cast<int32_t>(offset.y()));
 
     stream << static_cast<int32_t>(events.count());
-    foreach (const AnimationFrameEvent& e, events) {
-        stream << e.toBytes();
+    foreach (AnimationFrameEvent* e, events) {
+        e->write(stream);
     }
+}
+
+void AnimationFrame::addFrameEvent(AnimationFrameEvent *event)
+{
+    events.append(event);
 }
 

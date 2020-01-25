@@ -5,7 +5,7 @@
 #include "animationframe.h"
 #include "actorimagedata.h"
 
-
+#include "animationframeevent.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -53,13 +53,25 @@ MainWindow::MainWindow(QWidget *parent)
         this, SLOT(onAnimationDataChanged(AnimationData*))
     );
 
+    connect(
+        ui->actorImgeView, SIGNAL(cellSelected(int)),
+        ui->actorCellView, SLOT(setCell(int))
+    );
+
+#if 1
+    QString filename = "/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/otemo.png";
+#else
+    QString filename = "/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/sprite_koneko.png";
+#endif
+
     ActorImageData actorImage;
-    bool isLoaded = actorImage.load("/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/otemo.png");
-//    bool isLoaded = actorImage.load("/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/sprite_koneko.png");
+    bool isLoaded = actorImage.load(filename);
+    actor = Actor(actorImage);
 
     if (isLoaded) {
         ui->actorImgeView->setActorImage(actorImage);
-        ui->animationSelectListWidget->addNewAnimation(actorImage.getName());
+        ui->actorCellView->setActorImage(actorImage);
+        ui->animationSelectListWidget->addNewAnimation(actor.getImage()->getName());
     }
 }
 
@@ -144,7 +156,6 @@ void MainWindow::on_pushButton_clicked()
     QDataStream stream(&file);
     stream.setByteOrder(QDataStream::LittleEndian);
 
-    Actor actor;
     actor.setBoudingBox(ui->actorAnimationView->getBoundingBox());
     actor.write(stream);
 
@@ -217,4 +228,14 @@ void MainWindow::on_pushButtonAddAnimation_clicked()
 {
     QString name = ui->lineEditAnimationName->text();
     ui->animationSelectListWidget->addNewAnimation(name);
+}
+
+void MainWindow::on_pushButtonAddEvent_clicked()
+{
+    // TEST
+    {
+        AnimationFrameEvent* e = new AnimationFrameEvent();
+        ui->animationTreeWidget->addEvent(e);
+    }
+
 }

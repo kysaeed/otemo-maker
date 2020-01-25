@@ -16,6 +16,7 @@ ActorImageView::ActorImageView(QWidget *parent) : QGraphicsView(parent)
     qDebug("ActorImage::ActorImage");
 
     pressedCellNumber = -1;
+    selectedCellNumber = 0;
 }
 
 void ActorImageView::paintEvent(QPaintEvent*)
@@ -32,33 +33,54 @@ void ActorImageView::paintEvent(QPaintEvent*)
             qPainter.drawRect(x, y, image.getActorSize().width(), image.getActorSize().height());
         }
     }
+
+    qPainter.setPen(QPen(QColor(255, 0, 0), 2));
+    qPainter.setBrush(Qt::BrushStyle::NoBrush);
+    QPoint p = getCellXY(selectedCellNumber);
+    QRect seletedMark(p.x() * image.getActorSize().width(), p.y() * image.getActorSize().height(), image.getActorSize().width(), image.getActorSize().height());
+    qPainter.drawRect(seletedMark);
+
 }
 
 void ActorImageView::setActorImage(const ActorImageData &actorImage)
 {
     this->image = actorImage;
+    if (image.getCellCount() >= 0) {
+        selectedCellNumber = 0;
+    } else {
+        selectedCellNumber = -1;
+    }
+
+    emit cellSelected(selectedCellNumber);
     emit actorImageChanged(this->image);
 }
 
-void ActorImageView::mousePressEvent(QMouseEvent *event)
+QPixmap ActorImageView::createIconPixmap(int cell)
 {
-    pressedCellNumber = getCellNumber(event->x(), event->y());
-
     QPixmap pixmap(image.getActorSize().width() + 1, image.getActorSize().height() + 1);
     pixmap.fill(Qt::transparent);
     QPainter painer(&pixmap);
 
     QRect t(0, 0, image.getActorSize().width(), image.getActorSize().height());
-    image.drawCell(painer, pressedCellNumber, t);
+    image.drawCell(painer, cell, t);
     painer.setPen(QColor(0x10, 0x10, 0xF0, 0x80));
     painer.drawRect(t);
+
+    return pixmap;
+}
+
+void ActorImageView::enterDrag(int cell)
+{
+
+    this->pressedCellNumber = cell;
+    QPixmap pixmap = createIconPixmap(pressedCellNumber);
 
     QDrag* drag = new QDrag(this);
     QMimeData* data = new QMimeData();
 
     QByteArray bytes;
-    QDataStream s(&bytes, QIODevice::WriteOnly);
-    s << pressedCellNumber;
+    QDataStream stream(&bytes, QIODevice::WriteOnly);
+    stream << cell;
     data->setData("application/x-om-cell", bytes);
     drag->setMimeData(data);
     drag->setHotSpot(QPoint(64, 64));
@@ -67,21 +89,53 @@ void ActorImageView::mousePressEvent(QMouseEvent *event)
 
 }
 
+void ActorImageView::mousePressEvent(QMouseEvent *event)
+{
+
+
+    isDragEntered = false;
+    mousePressedPoint = event->pos();
+    pressedCellNumber = getCellNumber(event->x(), event->y());
+
+    qDebug("ActorImageView::mousePressEvent : %d", pressedCellNumber);
+
+}
+
 void ActorImageView::mouseReleaseEvent(QMouseEvent *event)
 {
-//qDebug("ActorImage::mouseReleaseEvent : e");
+    if (!isDragEntered) {
+        selectedCellNumber = pressedCellNumber;
+        viewport()->repaint();
+        emit cellSelected(selectedCellNumber);
+
+    } else {
+        isDragEntered = false;
+    }
+
 //    releaseMouse();
 //    QApplication::restoreOverrideCursor();
 
 //    emit droped(event->globalPos(), pressedCellNumber);
 
     int cell = getCellNumber(event->x(), event->y());
+
+
     if (cell != pressedCellNumber) {
         return;
     }
 
+}
 
-    emit cellSelected(cell);
+void ActorImageView::mouseMoveEvent(QMouseEvent *event)
+{
+    if (!isDragEntered) {
+        QPoint diff = mousePressedPoint - event->pos();
+        if (diff.manhattanLength() > 4) {
+            isDragEntered = true;
+            enterDrag(getCellNumber(event->x(), event->y()));
+        }
+    }
+
 }
 
 QPoint ActorImageView::getCellPosition(int x, int y)
@@ -109,6 +163,12 @@ int ActorImageView::getCellNumber(int x, int y)
     return cellPosition.x() + (cellPosition.y() * image.getCellSize().width());
 }
 
+QPoint ActorImageView::getCellXY(int cellNumber)
+{
+    return QPoint(cellNumber % image.getCellSize().width(), (cellNumber / image.getCellSize().width()));
+}
+
 void ActorImageView::dragMoveEvent(QDragMoveEvent *)
 {
 }
+

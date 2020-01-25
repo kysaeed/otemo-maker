@@ -37,10 +37,10 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>1100</x>
-      <y>580</y>
+      <x>1160</x>
+      <y>670</y>
       <width>171</width>
-      <height>81</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="text">
@@ -53,17 +53,17 @@
       <x>550</x>
       <y>420</y>
       <width>391</width>
-      <height>271</height>
+      <height>251</height>
      </rect>
     </property>
     <property name="headerHidden">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="columnCount">
      <number>2</number>
     </property>
     <attribute name="headerVisible">
-     <bool>true</bool>
+     <bool>false</bool>
     </attribute>
     <attribute name="headerDefaultSectionSize">
      <number>130</number>
@@ -230,6 +230,78 @@
      </item>
     </layout>
    </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>680</y>
+      <width>311</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QSpinBox" name="spinBoxEventId"/>
+     </item>
+     <item>
+      <widget class="QSlider" name="horizontalSlider">
+       <property name="maximum">
+        <number>10</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonAddEvent">
+       <property name="text">
+        <string>Add Event</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QSpinBox" name="spinBoxEventX">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>680</y>
+      <width>42</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="spinBoxEventY">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>680</y>
+      <width>42</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="AnimationMountPointList" name="mountPointList">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>340</y>
+      <width>256</width>
+      <height>192</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="AnimationCellView" name="actorCellView">
+    <property name="geometry">
+     <rect>
+      <x>960</x>
+      <y>520</y>
+      <width>201</width>
+      <height>191</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -268,6 +340,16 @@
    <class>AnimationSelectList</class>
    <extends>QListWidget</extends>
    <header>animationselectlist.h</header>
+  </customwidget>
+  <customwidget>
+   <class>AnimationMountPointList</class>
+   <extends>QListWidget</extends>
+   <header>animationmountpointlist.h</header>
+  </customwidget>
+  <customwidget>
+   <class>AnimationCellView</class>
+   <extends>QGraphicsView</extends>
+   <header>animationcellview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -5,6 +5,11 @@
 #include <QImage>
 #include <QPainter>
 #include <QFileInfo>
+#include <QVector>
+
+#include "animationmountpoint.h"
+#include "actorimagecelldata.h"
+
 
 class ActorImageData
 {
@@ -41,12 +46,19 @@ public:
 
     bool drawAll(QPainter& painter, QRect& rectDst) const;
 
+    ActorImageCellData* getCellData(int cell);
+
+    void setCellData(int cell, ActorImageCellData* data);
+
 protected:
     QImage image;
     QSize actorSize;
     QSize cellSize;
     int cellCount;
     QFileInfo fileInfo;
+
+    QVector<ActorImageCellData*> cellData;
+
 
 };
 

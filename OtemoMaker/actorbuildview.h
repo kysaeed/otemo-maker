@@ -1,4 +1,4 @@
-#ifndef ACTORBUILDVIEW_H
+﻿#ifndef ACTORBUILDVIEW_H
 #define ACTORBUILDVIEW_H
 
 #include <QGraphicsView>
@@ -7,6 +7,7 @@
 //#include <QSize>
 #include "actorimagedata.h"
 #include "actorframeview.h"
+#include "animationframeevent.h"
 
 class ActorBuildView : public QGraphicsView
 {
@@ -28,6 +29,7 @@ public slots:
     void setOffset(const QPoint& offset);
     void resetOffset();
     void setDefaultFrameCount(int frameCount);
+    void addEvent(int triggerFrame, const QPoint& offset);
 
 protected:
 

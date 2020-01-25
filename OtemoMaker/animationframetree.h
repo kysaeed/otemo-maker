@@ -6,6 +6,7 @@
 #include "animationframe.h"
 #include "animationdata.h"
 #include "animationframetreeitem.h"
+#include "animationframetreeeventitem.h"
 
 class AnimationFrameTree : public QTreeWidget
 {
@@ -14,6 +15,8 @@ public:
     AnimationFrameTree(QWidget* parent);
 
     void insertFrame(int index, AnimationFrame* frame);
+
+    void addEvent(AnimationFrameEvent* event);
 
     AnimationData* createAnimationData();
 

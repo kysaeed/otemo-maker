@@ -19,13 +19,19 @@ SOURCES += \
     actor.cpp \
     actorbuildview.cpp \
     actorframeview.cpp \
+    actorimagecelldata.cpp \
     actorimagedata.cpp \
     actorimageview.cpp \
+    animationcellview.cpp \
     animationdata.cpp \
     animationframe.cpp \
     animationframeevent.cpp \
     animationframetree.cpp \
+    animationframetreeeventitem.cpp \
     animationframetreeitem.cpp \
+    animationmountpoint.cpp \
+    animationmountpointlist.cpp \
+    animationmountpointlistitem.cpp \
     animationselectlistitem.cpp \
     animationselectlist.cpp \
     main.cpp \
@@ -35,13 +41,19 @@ HEADERS += \
     actor.h \
     actorbuildview.h \
     actorframeview.h \
+    actorimagecelldata.h \
     actorimagedata.h \
     actorimageview.h \
+    animationcellview.h \
     animationdata.h \
     animationframe.h \
     animationframeevent.h \
     animationframetree.h \
+    animationframetreeeventitem.h \
     animationframetreeitem.h \
+    animationmountpoint.h \
+    animationmountpointlist.h \
+    animationmountpointlistitem.h \
     animationselectlistitem.h \
     animationselectlist.h \
     mainwindow.h
