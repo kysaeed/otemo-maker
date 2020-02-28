@@ -29,6 +29,7 @@ SOURCES += \
     animationframetree.cpp \
     animationframetreeeventitem.cpp \
     animationframetreeitem.cpp \
+    animationlist.cpp \
     animationmountpoint.cpp \
     animationmountpointlist.cpp \
     animationmountpointlistitem.cpp \
@@ -51,6 +52,7 @@ HEADERS += \
     animationframetree.h \
     animationframetreeeventitem.h \
     animationframetreeitem.h \
+    animationlist.h \
     animationmountpoint.h \
     animationmountpointlist.h \
     animationmountpointlistitem.h \

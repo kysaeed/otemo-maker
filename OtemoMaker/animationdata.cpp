@@ -83,7 +83,7 @@ void AnimationData::addFrame(int position, AnimationFrame* frame)
 
 void AnimationData::pushFrame(AnimationFrame* frame)
 {
-    frames.push_back(frame);
+    frames.append(frame);
     reset();
 }
 

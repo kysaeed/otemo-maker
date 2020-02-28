@@ -58,6 +58,27 @@ MainWindow::MainWindow(QWidget *parent)
         ui->actorCellView, SLOT(setCell(int))
     );
 
+    connect(
+        ui->mountPointList, SIGNAL(mountPointListChanged(const QList<AnimationMountPoint*>&)),
+        ui->actorCellView, SLOT(setMountPoints(const QList<AnimationMountPoint*>&))
+    );
+
+    connect(
+        ui->mountPointList, SIGNAL(currentMountPointChanged(AnimationMountPoint*)),
+        ui->actorCellView, SLOT(selectCurrentMountPoint(AnimationMountPoint*))
+    );
+
+    connect(
+        ui->actorCellView,SIGNAL(currentMountPointUpdated()),
+        this, SLOT(onCellViewMountPointUpdated())
+    );
+
+    connect(
+        ui->actorImgeView, SIGNAL(cellSelected(int)),
+        this, SLOT(onImageCellSelected(int))
+    );
+
+
 #if 1
     QString filename = "/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/otemo.png";
 #else
@@ -68,9 +89,12 @@ MainWindow::MainWindow(QWidget *parent)
     bool isLoaded = actorImage.load(filename);
     actor = Actor(actorImage);
 
+//    ui->actorAnimationView->setAnimaitonData(&actor.getAnimaitons());
+//            actor.getAnimaitons();
+
     if (isLoaded) {
         ui->actorImgeView->setActorImage(actorImage);
-        ui->actorCellView->setActorImage(actorImage);
+        ui->actorCellView->setActorImage(actor.getImage());
         ui->animationSelectListWidget->addNewAnimation(actor.getImage()->getName());
     }
 }
@@ -89,6 +113,7 @@ void MainWindow::onImageCellSelected(AnimationFrame* frame)
 
     AnimationData* data = ui->animationTreeWidget->createAnimationData();
     ui->actorAnimationView->setAnimaitonData(data);
+//    ui->mountPointList->setCellData(); ??????
 }
 
 void MainWindow::onOffsetMoved(const QPoint &offset)
@@ -127,6 +152,15 @@ void MainWindow::onAnimationDataChanged(AnimationData *animation)
     ui->actorAnimationView->setAnimaitonData(animation);
 }
 
+void MainWindow::onImageCellSelected(int cell)
+{
+    qDebug("MainWindow::onImageCellSelected : %d ***********", cell);
+
+    if (actor.getImage() != nullptr) {
+        ui->mountPointList->setCellData(actor.getImage()->getCellData(cell));
+    }
+}
+
 void MainWindow::setFrameOffset(const QPoint &offset)
 {
     bool isBlocked = false;
@@ -157,14 +191,11 @@ void MainWindow::on_pushButton_clicked()
     stream.setByteOrder(QDataStream::LittleEndian);
 
     actor.setBoudingBox(ui->actorAnimationView->getBoundingBox());
+
+
+    actor.setAnimations(animationList);
     actor.write(stream);
 
-    qDebug("animation-ilst : count=%d", animationList.size());
-    stream << static_cast<int32_t>(animationList.size());
-    foreach (const AnimationData* animation, animationList) {
-        animation->write(stream);
-        qDebug(" frame count = %d", animation->getFrameCount());
-    }
     file.close();
 
     QMessageBox::information(this, tr("SAVE"), tr("animation data stored"));
@@ -211,6 +242,11 @@ void MainWindow::commitFrames()
     ui->animationSelectListWidget->setAniamtionData(animation);
 }
 
+void MainWindow::onCellViewMountPointUpdated()
+{
+    ui->mountPointList->updateCurrentItemText();
+}
+
 void MainWindow::on_spinBoxOffsetX_valueChanged(int x)
 {
     QPoint offset(x, ui->spinBoxOffsetY->value());
@@ -238,4 +274,13 @@ void MainWindow::on_pushButtonAddEvent_clicked()
         ui->animationTreeWidget->addEvent(e);
     }
 
+}
+
+void MainWindow::on_pushButtonAddMountPoint_clicked()
+{
+    int id = ui->spinBoxMoundPointId->value();
+    if (ui->mountPointList->addNewMountPoint(id, QPoint(10, 10))) {
+        int nextId = ui->mountPointList->getNextId();
+        ui->spinBoxMoundPointId->setValue(nextId);
+    }
 }

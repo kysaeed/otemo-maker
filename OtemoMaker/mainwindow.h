@@ -25,9 +25,12 @@ public:
 
 protected slots:
     void onImageCellSelected(AnimationFrame* frame);
+    void onImageCellSelected(int cell);
+
     void onOffsetMoved(const QPoint& offset);
     void onAnimationTreeSelected(AnimationFrame* frame);
     void onAnimationDataChanged(AnimationData* animation);
+
 
     void setFrameOffset(const QPoint& offset);
 
@@ -35,6 +38,8 @@ protected slots:
 //    void onAnimationUnselected(AnimationSelectListItem* previousItem);
 
     void commitFrames();
+
+    void onCellViewMountPointUpdated();
 
 private slots:
     void on_pushButton_clicked();
@@ -50,6 +55,8 @@ private slots:
     void on_pushButtonAddAnimation_clicked();
 
     void on_pushButtonAddEvent_clicked();
+
+    void on_pushButtonAddMountPoint_clicked();
 
 protected:
     Actor actor;

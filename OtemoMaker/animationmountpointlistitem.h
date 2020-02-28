@@ -16,9 +16,10 @@ public:
         return mountPoint;
     }
 
+    void updateText();
+
 protected:
     AnimationMountPoint* mountPoint;
-
 };
 
 #endif // ANIMATIONMOUNTPOINTLISTITEM_H

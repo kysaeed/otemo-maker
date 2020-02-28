@@ -51,6 +51,15 @@ ActorImageCellData* ActorImageData::getCellData(int cell)
     return cellData[cell];
 }
 
+bool ActorImageData::isEmptyCellData(int cell)
+{
+    if (cellData[cell] == nullptr) {
+        return true;
+    }
+
+    return false;
+}
+
 void ActorImageData::setCellData(int cell, ActorImageCellData* data)
 {
     if (cellData[cell] == data) {

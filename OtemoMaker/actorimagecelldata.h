@@ -3,10 +3,11 @@
 
 #include <QList>
 #include <QRect>
-
+#include <QDataStream>
 
 #include "animationmountpoint.h"
 
+//typedef QList<AnimationMountPoint*> AnimationMountPointList;
 
 class ActorImageCellData
 {
@@ -19,6 +20,10 @@ public:
     void clearMountPoints();
 //    inline AnimationMountPoint* getMountPoint(int ) const { return ; }
 
+    inline QList<AnimationMountPoint*>& getMountPoints() { return this->mountPoints; }
+    void setMountPoints(const QList<AnimationMountPoint*>& points);
+
+    void write(QDataStream& stream) const;
 protected:
     QList<AnimationMountPoint*> mountPoints;
 

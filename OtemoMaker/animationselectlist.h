@@ -5,7 +5,11 @@
 #include <QListWidget>
 #include <QList>
 
+#include "animationlist.h"
+#include "actor.h"
 #include "animationselectlistitem.h"
+
+
 
 class AnimationSelectList : public QListWidget
 {
@@ -18,6 +22,9 @@ public:
     AnimationSelectListItem* getCurrentItem();
     AnimationData* getCurrentAnimation();
 
+    AnimationList* getAnimationList();
+    void setAnimations(AnimationList* animations);
+
 public slots:
     void setAniamtionData(AnimationData* animation);
 
@@ -28,7 +35,9 @@ protected slots:
     void onCurrentItemChanged(QListWidgetItem* current, QListWidgetItem* previous);
 
 protected:
+    void syncData();
     static AnimationData* getAnimationData(QListWidgetItem* item);
+    AnimationList* animations;
 
 };
 

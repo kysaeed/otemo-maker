@@ -47,6 +47,8 @@ public:
     bool drawAll(QPainter& painter, QRect& rectDst) const;
 
     ActorImageCellData* getCellData(int cell);
+    bool isEmptyCellData(int cell);
+
 
     void setCellData(int cell, ActorImageCellData* data);
 

@@ -2,6 +2,8 @@
 
 AnimationSelectList::AnimationSelectList(QWidget *parent) : QListWidget(parent)
 {
+    animations = nullptr;
+
     connect(
         this, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
         this, SLOT(onCurrentItemChanged(QListWidgetItem*, QListWidgetItem*))
@@ -17,6 +19,21 @@ void AnimationSelectList::onCurrentItemChanged(QListWidgetItem *current, QListWi
     }
 
     emit animationSelected(getAnimationData(item), getAnimationData(previousItem));
+}
+
+void AnimationSelectList::syncData()
+{
+    if (animations == nullptr) {
+        return;
+    }
+
+    QList<AnimationData*> lsit;
+    for (int i = 0; i < count(); i++) {
+        AnimationSelectListItem* item = dynamic_cast<AnimationSelectListItem*>(this->item(i));
+        lsit.append(item->getAnimation());
+    }
+
+    animations->setAnimationList(lsit);
 }
 
 AnimationData *AnimationSelectList::getAnimationData(QListWidgetItem *item)
@@ -43,6 +60,24 @@ AnimationData *AnimationSelectList::getCurrentAnimation()
     return item->getAnimation();
 }
 
+AnimationList *AnimationSelectList::getAnimationList()
+{
+    return animations;
+}
+
+void AnimationSelectList::setAnimations(AnimationList *animatoins)
+{
+    if (animations == nullptr) {
+        return;
+    }
+
+    clear();
+    foreach (AnimationData* animation, animatoins->getList()) {
+        AnimationSelectListItem* item = new AnimationSelectListItem(animation, this);
+        addItem(item);
+    }
+}
+
 void AnimationSelectList::addNewAnimation(const QString &name)
 {
     AnimationSelectListItem* previousItem = dynamic_cast<AnimationSelectListItem*>(currentItem());
@@ -54,9 +89,10 @@ void AnimationSelectList::addNewAnimation(const QString &name)
 
     AnimationData* animation = new AnimationData(itemTitle);
     AnimationSelectListItem* item = new AnimationSelectListItem(animation, this);
-    this->addItem(item);
+    addItem(item);
+    setItemSelected(item, true);
 
-    this->setItemSelected(item, true);
+    syncData();
 
     emit animationSelected(getAnimationData(item), getAnimationData(previousItem));
 }
@@ -66,8 +102,8 @@ QList<AnimationData*> AnimationSelectList::createAnimationList()
     QList<AnimationData*> animatonList;
 
     for (int i = 0; i < this->count(); i++) {
-        AnimationSelectListItem* pItem = dynamic_cast<AnimationSelectListItem*>(item(i));
-        animatonList.push_back(pItem->getAnimation());
+        AnimationSelectListItem* item = dynamic_cast<AnimationSelectListItem*>(this->item(i));
+        animatonList.append(item->getAnimation());
     }
 
     return animatonList;
@@ -86,5 +122,5 @@ void AnimationSelectList::setAniamtionData(AnimationData* animation)
         return;
     }
 
-    item->setAnimation(animation);  //@@
+    item->setAnimation(animation);
 }
