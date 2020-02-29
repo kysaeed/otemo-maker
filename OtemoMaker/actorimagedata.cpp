@@ -22,7 +22,10 @@ bool ActorImageData::load(const QString &filename)
     cellSize = QSize(image.width() / actorSize.width(), image.height() / actorSize.height());
     cellCount = cellSize.width() * cellSize.height();
 
-    cellData.fill(nullptr, getCellCount());
+    cellData.clear();
+    for (int i = 0; i < getCellCount(); i++) {
+        cellData.append(new ActorImageCellData());
+    }
 
     return true;
 }
@@ -67,6 +70,18 @@ void ActorImageData::setCellData(int cell, ActorImageCellData* data)
     }
 
     cellData[cell] = data;
+}
+
+void ActorImageData::write(QDataStream &stream) const
+{
+    stream << static_cast<int32_t>(getCellCount());
+
+    foreach (ActorImageCellData* c, cellData) {
+        if (c != nullptr) {
+            c->write(stream);
+        }
+    }
+
 }
 
 int ActorImageData::getCellNumber(int x, int y) const

@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QFileInfo>
 #include <QVector>
+#include <QDataStream>
 
 #include "animationmountpoint.h"
 #include "actorimagecelldata.h"
@@ -51,6 +52,8 @@ public:
 
 
     void setCellData(int cell, ActorImageCellData* data);
+
+    void write(QDataStream& stream) const;
 
 protected:
     QImage image;

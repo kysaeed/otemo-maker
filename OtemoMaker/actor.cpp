@@ -28,6 +28,11 @@ void Actor::write(QDataStream &stream) const
     stream << static_cast<int32_t>(boudingBox.width());
     stream << static_cast<int32_t>(boudingBox.height());
 
+//    ActorImageData
+    image.write(stream);
+
+//    ActorAnimation
+
     animations.write(stream);
 }
 

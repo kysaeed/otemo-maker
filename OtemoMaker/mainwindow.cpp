@@ -79,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent)
     );
 
 
-#if 1
+#if 0
     QString filename = "/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/otemo.png";
 #else
     QString filename = "/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/sprite_koneko.png";
