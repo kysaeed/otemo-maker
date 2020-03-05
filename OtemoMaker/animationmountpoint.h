@@ -16,7 +16,8 @@ public:
     void setId(int id);
     void setOffset(const QPoint& offset);
 
-    void write(QDataStream& stream);
+    void write(QDataStream& stream) const;
+    void read(QDataStream& stream);
 
 protected:
     int id;

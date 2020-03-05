@@ -84,6 +84,17 @@ void ActorImageData::write(QDataStream &stream) const
 
 }
 
+void ActorImageData::read(QDataStream &stream)
+{
+    cellData.clear();
+    int32_t cellCount = 0;
+    for (int i = 0; i < cellCount; i++) {
+        ActorImageCellData* c = new ActorImageCellData();
+        c->read(stream);
+        cellData.append(c);
+    }
+}
+
 int ActorImageData::getCellNumber(int x, int y) const
 {
     QPoint cellPosition = getCellPosition(x, y);

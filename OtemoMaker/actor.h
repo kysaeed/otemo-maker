@@ -41,6 +41,7 @@ public:
     void setAnimations(const AnimationList& animations);
 
     void write(QDataStream &stream) const;
+
     void read(QDataStream &stream);
 
 protected:

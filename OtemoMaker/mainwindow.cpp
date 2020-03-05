@@ -79,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent)
     );
 
 
-#if 0
+#if 1
     QString filename = "/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/otemo.png";
 #else
     QString filename = "/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/sprite_koneko.png";
@@ -88,9 +88,6 @@ MainWindow::MainWindow(QWidget *parent)
     ActorImageData actorImage;
     bool isLoaded = actorImage.load(filename);
     actor = Actor(actorImage);
-
-//    ui->actorAnimationView->setAnimaitonData(&actor.getAnimaitons());
-//            actor.getAnimaitons();
 
     if (isLoaded) {
         ui->actorImgeView->setActorImage(actorImage);

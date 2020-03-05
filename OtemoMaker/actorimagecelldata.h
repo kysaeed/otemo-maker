@@ -24,6 +24,8 @@ public:
     void setMountPoints(const QList<AnimationMountPoint*>& points);
 
     void write(QDataStream& stream) const;
+    void read(QDataStream& stream);
+
 protected:
     QList<AnimationMountPoint*> mountPoints;
 

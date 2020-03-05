@@ -54,6 +54,7 @@ public:
     void setCellData(int cell, ActorImageCellData* data);
 
     void write(QDataStream& stream) const;
+    void read(QDataStream& stream);
 
 protected:
     QImage image;

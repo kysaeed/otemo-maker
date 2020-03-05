@@ -115,19 +115,47 @@ void AnimationCellView::paintEvent(QPaintEvent*)
 }
 
 
-void AnimationCellView::mousePressEvent(QMouseEvent *)
+void AnimationCellView::mousePressEvent(QMouseEvent *event)
 {
-    //
+    if (currentCellData == nullptr) {
+        return;
+    }
 
+    if (currentMountPoint != nullptr) {
+        QPoint offset(event->pos().x(), event->pos().y());
+        currentMountPoint->setOffset(event->pos());
+        emit currentMountPointUpdated();
+    }
+
+    viewport()->repaint();
 }
 
 void AnimationCellView::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (currentCellData != nullptr) {
-        if (currentMountPoint != nullptr) {
-            currentMountPoint->setOffset(event->pos());
-            emit currentMountPointUpdated();
-        }
+    if (currentCellData == nullptr) {
+        return;
+    }
+
+    if (currentMountPoint != nullptr) {
+        QPoint offset(event->pos().x(), event->pos().y());
+        currentMountPoint->setOffset(event->pos());
+        emit currentMountPointUpdated();
+    }
+
+    viewport()->repaint();
+}
+
+
+void AnimationCellView::mouseMoveEvent(QMouseEvent *event)
+{
+    if (currentCellData == nullptr) {
+        return;
+    }
+
+    if (currentMountPoint != nullptr) {
+        QPoint offset(event->pos().x(), event->pos().y());
+        currentMountPoint->setOffset(event->pos());
+        emit currentMountPointUpdated();
     }
 
     viewport()->repaint();
