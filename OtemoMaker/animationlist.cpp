@@ -24,7 +24,19 @@ qDebug(" frame count = %d", animation->getFrameCount());
     }
 }
 
+void AnimationList::read(QDataStream &stream)
+{
+    int32_t listCount = 0;
+    stream >> listCount;
+qDebug("animation data count : %d", listCount);
+    for (int i = 0; i < listCount; i++) {
+        AnimationData* animation = new AnimationData();
+        animation->read(stream);
+    }
+}
+
 void AnimationList::setAnimationList(QList<AnimationData *> list)
 {
     this->list = list;
 }
+

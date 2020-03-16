@@ -22,7 +22,10 @@ public:
         return list;
     }
 
+    void read(QDataStream &strem);
+
     void write(QDataStream &stream) const;
+
 
 protected:
     QList<AnimationData*> list;

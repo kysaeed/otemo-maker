@@ -44,5 +44,5 @@ void Actor::read(QDataStream &stream)
     boudingBox.setRect(x ,y, w, h);
 
     image.read(stream);
-
+    animations.read(stream);
 }

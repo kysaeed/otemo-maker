@@ -9,7 +9,8 @@ class AnimationFrameEvent
 {
 public:
     AnimationFrameEvent();
-    void write(QDataStream& stream);
+    void write(QDataStream& stream) const;
+    void read(QDataStream& stream);
 
     inline int getId() const { return id; }
     inline const QPoint getOffset() const { return offset; }

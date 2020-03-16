@@ -104,6 +104,25 @@ void AnimationData::write(QDataStream &stream) const
     }
 }
 
+void AnimationData::read(QDataStream &stream)
+{
+    QByteArray nameBytes;
+    stream >> nameBytes;
+
+    int32_t frameCount = 0;
+    stream >> frameCount;
+    for (int i = 0; i < frameCount; i++) {
+        AnimationFrame* frame = new AnimationFrame();
+        frame->read(stream);
+    }
+
+
+    /////////////////
+
+
+}
+
+
 QByteArray AnimationData::toBytes() const
 {
     QByteArray bytes;

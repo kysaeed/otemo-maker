@@ -39,6 +39,7 @@ public:
         return frames.count();
     }
 
+    void read(QDataStream& stream);
     void write(QDataStream& stream) const;
     QByteArray toBytes() const;
 

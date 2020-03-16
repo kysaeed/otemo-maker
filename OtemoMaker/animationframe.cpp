@@ -43,6 +43,29 @@ void AnimationFrame::setOffset(const QPoint &offset)
     this->offset = offset;
 }
 
+void AnimationFrame::read(QDataStream &stream)
+{
+    int32_t cell = 0;
+    int32_t frameCount = 0;
+    stream >> cell >> frameCount;
+    this->cell = cell;
+    this->frameCount = frameCount;
+
+    int32_t x = 0;
+    int32_t y = 0;
+    stream >> x >> y;
+    this->offset = QPoint(x, y);
+
+    int32_t count = 0;
+    stream >> count;
+    for (int i = 0; i < count; i++) {
+        AnimationFrameEvent* e = new AnimationFrameEvent();
+        e->read(stream);
+    }
+
+
+}
+
 void AnimationFrame::write(QDataStream &stream) const
 {
     stream << (static_cast<int32_t>(cell)) << (static_cast<int32_t>(frameCount));

@@ -32,6 +32,7 @@ public:
     const QPoint& getOffset() const { return offset; }
     void setOffset(const QPoint& offset);
 
+    void read(QDataStream& stream);
     void write(QDataStream& stream) const;
 
     void addFrameEvent(AnimationFrameEvent* event);

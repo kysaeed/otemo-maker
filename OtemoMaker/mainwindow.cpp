@@ -7,6 +7,8 @@
 
 #include "animationframeevent.h"
 
+#define TEST_OUTPUT_PATH "/tmp/otemo.oan"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -85,9 +87,17 @@ MainWindow::MainWindow(QWidget *parent)
     QString filename = "/Users/kysaeed/work/qt/otemo-maker/OtemoMaker/sprite_koneko.png";
 #endif
 
+
     ActorImageData actorImage;
     bool isLoaded = actorImage.load(filename);
     actor = Actor(actorImage);
+
+
+    QFile file(TEST_OUTPUT_PATH);
+    if (file.open(QIODevice::ReadOnly)) {
+        QDataStream stream(&file);
+        actor.read(stream);
+    }
 
     if (isLoaded) {
         ui->actorImgeView->setActorImage(actorImage);
@@ -153,9 +163,13 @@ void MainWindow::onImageCellSelected(int cell)
 {
     qDebug("MainWindow::onImageCellSelected : %d ***********", cell);
 
-    if (actor.getImage() != nullptr) {
-        ui->mountPointList->setCellData(actor.getImage()->getCellData(cell));
+    if (actor.getImage() == nullptr) {
+        return;
     }
+
+    ui->mountPointList->setCellData(actor.getImage()->getCellData(cell));
+    int nextId = ui->mountPointList->getNextId();
+    ui->spinBoxMoundPointId->setValue(nextId);
 }
 
 void MainWindow::setFrameOffset(const QPoint &offset)
@@ -178,7 +192,7 @@ void MainWindow::on_pushButton_clicked()
     qDebug("write!");
 
     QList<AnimationData*> animationList = ui->animationSelectListWidget->createAnimationList();
-    QFile file("/tmp/otemo.oan");
+    QFile file(TEST_OUTPUT_PATH);
     if (!file.open(QIODevice::WriteOnly)) {
         qDebug(" write failed....");
         return;
